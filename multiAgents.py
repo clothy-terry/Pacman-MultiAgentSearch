@@ -107,7 +107,7 @@ class ReflexAgent(Agent):
         else:
             ghostDist = float('inf')
         
-        return successorGameState.getScore()-10/(ghostDist+1)-foodDist/5
+        return successorGameState.getScore()+(ghostDist)/10+2/(foodDist+1)
 
 
     
