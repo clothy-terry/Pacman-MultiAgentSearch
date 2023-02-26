@@ -195,6 +195,7 @@ class MinimaxAgent(MultiAgentSearchAgent):
         for action in gameState.getLegalActions(0):
             successor = gameState.generateSuccessor(0, action)
             if (gameState.getNumAgents == 1):
+                #Change depth only when all ghosts and pacman go thru 1 iteration
                 curValue = self.value(successor, 0, depth-1)[0]
             if (agentIndex < gameState.getNumAgents() - 1):
                 curValue = self.value(successor, agentIndex+1, depth)[0]
@@ -219,11 +220,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 v = curValue
                 maxAction = action
         return [v, maxAction]
-            
-            
-
-
-
         util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
