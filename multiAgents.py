@@ -189,7 +189,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
             
     def max(self, gameState:GameState, agentIndex, depth):
         v = float('-inf')
-        maxAction = Directions.STOP
         
         #iterate through successors
         for action in gameState.getLegalActions(0):
@@ -208,7 +207,6 @@ class MinimaxAgent(MultiAgentSearchAgent):
 
     def min(self, gameState:GameState, agentIndex, depth):
         v = float('inf')
-        maxAction = Directions.STOP
         
         for action in gameState.getLegalActions(agentIndex):
             successor = gameState.generateSuccessor(agentIndex, action)
