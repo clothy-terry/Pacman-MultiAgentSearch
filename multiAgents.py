@@ -198,7 +198,52 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
         legal moves.
         """
         "*** YOUR CODE HERE ***"
-        util.raiseNotDefined()
+        return self.value(gameState, 0, self.depth)[1]
+        
+    # return a tuple (Score , Action)
+    def value(self, gameState:GameState, agentIndex, depth):
+        #Terminal state
+        if depth == 0 :
+            return [self.evaluationFunction(gameState), Directions.STOP]
+        if gameState.isWin() or gameState.isLose():
+            return [self.evaluationFunction(gameState), Directions.STOP]
+        elif agentIndex != 0:
+            return self.expect_value(gameState, agentIndex, depth)
+        elif agentIndex == 0:
+            return self.max_value(gameState, agentIndex, depth)
+        else :
+            print("error on terminal state")
+
+    def max_value(self, gameState:GameState,agentIndex, depth):
+
+        Maxvalue = float('-inf')
+        MaxAction = Directions.STOP
+        for each in gameState.getLegalActions(0):
+            curSuccessor = gameState.generateSuccessor(0,each)
+            if (gameState.getNumAgents == 1):
+                curValue = self.value(curSuccessor, 0, depth - 1)[0]
+            else:
+                curValue = self.value(curSuccessor, agentIndex + 1, depth)[0]
+            if (curValue > Maxvalue) :
+                Maxvalue = curValue
+                MaxAction = each
+        #return the max score and optimal action at this depth
+        return [Maxvalue, MaxAction]
+
+
+    def expect_value(self, gameState:GameState, agentIndex, depth):
+        value = 0
+        for each in gameState.getLegalActions(agentIndex):
+            curSuccessor = gameState.generateSuccessor(agentIndex,each)
+            if (agentIndex < gameState.getNumAgents() - 1):
+                curValue = self.value(curSuccessor, agentIndex + 1, depth)[0]
+            else:
+                curValue = self.value(curSuccessor, 0, depth - 1)[0]
+            value += curValue/len(gameState.getLegalActions(agentIndex))
+        return [value, Directions.STOP]
+
+
+
 
 def betterEvaluationFunction(currentGameState: GameState):
     """
