@@ -199,8 +199,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 curValue = self.value(successor, 0, depth-1)[0]
             if (curValue>v):
                 v = curValue
-                maxAction = action
-        return [v, maxAction]
+                bestAction = action
+        return [v, bestAction]
 
     def min(self, gameState:GameState, agentIndex, depth):
         v = float('inf')
@@ -213,8 +213,8 @@ class MinimaxAgent(MultiAgentSearchAgent):
                 curValue = self.value(successor, 0, depth-1)[0]
             if (curValue<v):
                 v = curValue
-                maxAction = action
-        return [v, maxAction]
+                bestAction = action
+        return [v, bestAction]
         util.raiseNotDefined()
 
 class AlphaBetaAgent(MultiAgentSearchAgent):
