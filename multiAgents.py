@@ -98,12 +98,8 @@ class ReflexAgent(Agent):
         else:
             foodDist = 0
 
-        ghostDist = manhattanDistance(newPos, ghostList[0])
         if(newScaredTimes[0]==0):
-            for i in range(len(ghostList)):
-                newGhostDist = manhattanDistance(newPos, ghostList[i])
-                if (ghostDist>newGhostDist):
-                    ghostDist = newGhostDist
+            ghostDist = manhattanDistance(newPos, ghostList[0])
         else:
             ghostDist = float('inf')
         
@@ -349,7 +345,24 @@ def betterEvaluationFunction(currentGameState: GameState):
     DESCRIPTION: <write something here so we know what you did>
     """
     "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    currPos = currentGameState.getPacmanPosition()
+    currFood = currentGameState.getFood()
+    currGhostStates = currentGameState.getGhostStates()
+    currScaredTimes = [ghostState.scaredTimer for ghostState in currGhostStates]
+
+    foodList = currFood.asList()
+    ghostList = currentGameState.getGhostPositions()
+    aggregateFoodDist = 0
+
+    if (foodList):
+        aggregateFoodDist = min([manhattanDistance(currPos, f) for f in foodList])
+
+    ghostDist = manhattanDistance(currPos, ghostList[0])
+    if(currScaredTimes[0]==0):
+        return currentGameState.getScore()+(ghostDist)/10+2/(aggregateFoodDist+0.01)
+    else:
+        return currentGameState.getScore()+2/(ghostDist+0.01)+2/(aggregateFoodDist+0.01)
+        
 
 # Abbreviation
 better = betterEvaluationFunction
