@@ -332,7 +332,7 @@ class ExpectimaxAgent(MultiAgentSearchAgent):
             curValue = self.value(curSuccessor, agentIndex + 1, depth)
             if (curValue > Maxvalue) :
                 Maxvalue = curValue
-        #return the max score and optimal action at this depth
+        #return the max score at this depth
         return Maxvalue
 
 
