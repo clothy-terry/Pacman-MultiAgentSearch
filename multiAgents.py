@@ -349,19 +349,28 @@ def betterEvaluationFunction(currentGameState: GameState):
     currFood = currentGameState.getFood()
     currGhostStates = currentGameState.getGhostStates()
     currScaredTimes = [ghostState.scaredTimer for ghostState in currGhostStates]
-
+    powerPellets = currentGameState.getCapsules()
+    
     foodList = currFood.asList()
     ghostList = currentGameState.getGhostPositions()
     aggregateFoodDist = 0
 
     if (foodList):
         aggregateFoodDist = min([manhattanDistance(currPos, f) for f in foodList])
-
+        
+    powerScore = 0
+    if powerPellets:
+        superDist = min(manhattanDistance(currPos, pellet) for pellet in powerPellets)
+        powerScore = 20/(superDist+0.01)
+    
+    
     ghostDist = manhattanDistance(currPos, ghostList[0])
     if(currScaredTimes[0]==0):
-        return currentGameState.getScore()+(ghostDist)/10+2/(aggregateFoodDist+0.01)
+        return currentGameState.getScore()*2+(ghostDist)/2+\
+                2/(aggregateFoodDist+0.01)+powerScore
     else:
-        return currentGameState.getScore()+2/(ghostDist+0.01)+2/(aggregateFoodDist+0.01)
+        return currentGameState.getScore()*2+2/(ghostDist+0.01)+\
+                2/(aggregateFoodDist+0.01)+powerScore
         
 
 # Abbreviation
